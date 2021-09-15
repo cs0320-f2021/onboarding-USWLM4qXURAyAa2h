@@ -98,26 +98,23 @@ public final class Main {
               Double y = Double.parseDouble(arguments[3]);
               Double z = Double.parseDouble(arguments[4]);
 
-              String err = sb.nearestNeighborsCoords(k, x, y, z);
-              if (err.equals("")) {
-               //TODO call sb function that prints out all the nearest neighbors found
-                System.out.println("TODO");
-              } else {
+              String err = sb.naiveNeighborsCoords(k, x, y, z);
+              if (!err.equals("")) {
                 System.out.println(err);
               }
             } else if (arguments.length == 3) {
               Integer k = Integer.getInteger(arguments[1]);
               String name = arguments[2];
-              String err = sb.nearestNeighborsName(k, name);
 
-              if (err.equals("")) {
-                //TODO call sb function that prints out all the nearest neighbors found
-                System.out.println("TODO");
-              } else {
+              System.out.println(arguments[1]); //TODO FIX THIS BUG WHERE Integer.getInteger not working AND MAYBE UNDO UNBOXING STUFF
+
+              String err = sb.naiveNeighborsName(k, name);
+              if (!err.equals("")) {
                 System.out.println(err);
               }
             } else {
-              System.out.println("ERROR: naive_neighbors requires either two or four arguments: <k> <\"name\"> or <k> <x> <y> <z>");
+              System.out.println(
+                  "ERROR: naive_neighbors requires either two or four arguments: <k> <\"name\"> or <k> <x> <y> <z>");
             }
           }
         } catch (Exception e) {
