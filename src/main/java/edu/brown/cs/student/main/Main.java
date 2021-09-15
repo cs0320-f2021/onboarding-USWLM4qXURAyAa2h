@@ -60,21 +60,68 @@ public final class Main {
       runSparkServer((int) options.valueOf("port"));
     }
 
+    //MathBot and StarBot for this REPL loop
+    MathBot mb = new MathBot();
+    StarBot sb = new StarBot();
+
     try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
       String input;
       while ((input = br.readLine()) != null) {
         try {
           input = input.trim();
           String[] arguments = input.split(" ");
-          MathBot mb = new MathBot();
           if (arguments[0].equals("add")) {
-            System.out.println(mb.add(Double.parseDouble(arguments[1]), Double.parseDouble(arguments[2])));
+            System.out.println(
+                mb.add(Double.parseDouble(arguments[1]), Double.parseDouble(arguments[2])));
           } else if (arguments[0].equals("subtract")) {
-            System.out.println(mb.subtract(Double.parseDouble(arguments[1]), Double.parseDouble(arguments[2])));
-          }
+            System.out.println(
+                mb.subtract(Double.parseDouble(arguments[1]), Double.parseDouble(arguments[2])));
+          } else if (arguments[0].equals("stars")) {
+            // first possible command: stars <filename>
+            // takes in a filename to read a csv from. see function signature in StarBot class for details.
 
+            try { // if there is a filename argument, use that. else complain
+              String err = sb.readCsv(arguments[1]);
+              if (err.equals("")) {
+                System.out.println(
+                    "Read " + sb.getNumStarsAsString() + " stars from " + arguments[1]);
+              } else {
+                System.out.println(err);
+              }
+            } catch (IndexOutOfBoundsException e) {
+              System.out.println("ERROR: readcsv requires exactly one filename argument.");
+            }
+          } else if (arguments[0].equals("naive_neighbors")) {
+            if (arguments.length == 5) {
+              Integer k = Integer.getInteger(arguments[1]);
+              Double x = Double.parseDouble(arguments[2]);
+              Double y = Double.parseDouble(arguments[3]);
+              Double z = Double.parseDouble(arguments[4]);
+
+              String err = sb.nearestNeighborsCoords(k, x, y, z);
+              if (err.equals("")) {
+               //TODO call sb function that prints out all the nearest neighbors found
+                System.out.println("TODO");
+              } else {
+                System.out.println(err);
+              }
+            } else if (arguments.length == 3) {
+              Integer k = Integer.getInteger(arguments[1]);
+              String name = arguments[2];
+              String err = sb.nearestNeighborsName(k, name);
+
+              if (err.equals("")) {
+                //TODO call sb function that prints out all the nearest neighbors found
+                System.out.println("TODO");
+              } else {
+                System.out.println(err);
+              }
+            } else {
+              System.out.println("ERROR: naive_neighbors requires either two or four arguments: <k> <\"name\"> or <k> <x> <y> <z>");
+            }
+          }
         } catch (Exception e) {
-          // e.printStackTrace();
+          e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
         }
       }
@@ -82,6 +129,7 @@ public final class Main {
       e.printStackTrace();
       System.out.println("ERROR: Invalid input for REPL");
     }
+
 
   }
 
