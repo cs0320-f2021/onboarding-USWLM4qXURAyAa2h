@@ -16,6 +16,12 @@ public class Star {
     z = zi;
   }
 
+  //printing function for debugging
+  public void debugPrint() {
+    System.out.println(id);
+    System.out.println("name: " + name);
+  }
+
 
 
 

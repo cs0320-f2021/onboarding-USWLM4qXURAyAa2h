@@ -93,7 +93,7 @@ public final class Main {
             }
           } else if (arguments[0].equals("naive_neighbors")) {
             if (arguments.length == 5) {
-              Integer k = Integer.getInteger(arguments[1]);
+              Integer k = Integer.parseInt(arguments[1]);
               Double x = Double.parseDouble(arguments[2]);
               Double y = Double.parseDouble(arguments[3]);
               Double z = Double.parseDouble(arguments[4]);
@@ -103,10 +103,8 @@ public final class Main {
                 System.out.println(err);
               }
             } else if (arguments.length == 3) {
-              Integer k = Integer.getInteger(arguments[1]);
+              Integer k = Integer.parseInt(arguments[1]);
               String name = arguments[2];
-
-              System.out.println(arguments[1]); //TODO FIX THIS BUG WHERE Integer.getInteger not working AND MAYBE UNDO UNBOXING STUFF
 
               String err = sb.naiveNeighborsName(k, name);
               if (!err.equals("")) {

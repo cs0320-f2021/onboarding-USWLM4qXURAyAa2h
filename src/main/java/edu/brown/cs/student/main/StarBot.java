@@ -42,6 +42,7 @@ public class StarBot {
     //Refresh the stars that are in here right now
     stars = new HashMap<Integer, Star>();
     namesToIds = new HashMap<String, Integer>();
+    int unnamedStarsCt = 0;
     try {
       File file = new File(filename);
       BufferedReader br = new BufferedReader(new FileReader(file));
@@ -52,10 +53,19 @@ public class StarBot {
         while ((line = br.readLine()) != null) {
           String[] a = line.split(",");
           if (a.length == 5) {
-            Integer id = Integer.getInteger(a[0]);
+            int id = Integer.parseInt(a[0]);
             String name = a[1];
             Star s = new Star(id, name, Double.parseDouble(a[2]), Double.parseDouble(a[3]),
                 Double.parseDouble(a[4]));
+
+            //if a star does not have a name, give it a unique name
+            //not in a project setting I would probably print some indication this happened
+            if (name.equals("")) {
+              name = "unnamedStar" + String.valueOf(unnamedStarsCt);
+              unnamedStarsCt += 1;
+            }
+
+            //make sure these keys are not already in the hashmaps before putting
             assert (stars.get(id) == null);
             assert (namesToIds.get(name) == null);
             stars.put(id, s);
@@ -94,7 +104,7 @@ public class StarBot {
    */
   public String naiveNeighborsCoords(Integer k, Double x, Double y, Double z) {
     //Check if k>=0, if not then return an error string
-    if (k.intValue() < 0) {
+    if (k < 0) {
       return "ERROR: k must be a nonnegative integer";
     }
 
@@ -115,10 +125,8 @@ public class StarBot {
 
 
   public String naiveNeighborsName(Integer k, String name) {
-    //TODO make sure that name is in quotes
-
     //Check if k>=0, if not then return an error string
-    if (k.intValue() < 0) {
+    if (k < 0) {
       return "ERROR: k must be a nonnegative integer";
     }
 
@@ -132,7 +140,7 @@ public class StarBot {
       name = name.replaceAll("\"", "");
       Integer id = namesToIds.get(name);
       if (id == null) {
-        return "ERROR: star id for " + name + "not found.";
+        return "ERROR: star id for " + name + " not found.";
       }
 
       //Retrieve the proper Star object and pass to calculateAndPrintDistances
