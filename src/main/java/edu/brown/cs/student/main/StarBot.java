@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.SortedMap;
 
 public class StarBot {
 
@@ -84,13 +85,36 @@ public class StarBot {
   }
 
   /**
-   * Private function that calculates all of the Euclidean distances for all the stars from the given Star
+   * Private function that calculates all of the Euclidean distances for all the stars from s
    * And then prints out the IDs of the top k closest stars
+   * Euclidean distance is calculated by sqrt((x_1 - x_2)^2 + (y_1 - y_2)^2 + (z_1 - z_2)^2)
    *
    * @param s - star to calculate all Euclidean distances from
    */
   private void calculateAndPrintDistances(Integer k, Star s) {
-    System.out.println("BIIIG TODO!");
+    //don't want it to do anything if k is 0. if nonzero, then look for neighbors.
+    if (k > 0) {
+      Double x = s.getX();
+      Double y = s.getY();
+      Double z = s.getZ();
+
+      for (Integer otherId : stars.keySet()) {
+        Star otherStar = stars.get(otherId);
+        Double diffX = x - otherStar.getX();
+        Double diffY = y - otherStar.getY();
+        Double diffZ = z - otherStar.getZ();
+
+        //Math.pow is slow, so multiply by itself instead
+        Double dist = Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
+
+        //TODO CREATE A SORTED DATA STRUCTURE TO STORE ALL THE DISTANCES AND THEN GET ID
+        // SortedMap<>??
+//        System.out.println(Integer.toString(otherId) + ": " + Double.toString(dist));
+
+
+      }
+
+    }
   }
 
   /**
