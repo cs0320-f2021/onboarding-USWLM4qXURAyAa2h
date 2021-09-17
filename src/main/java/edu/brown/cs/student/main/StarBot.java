@@ -5,7 +5,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.SortedMap;
 
 public class StarBot {
@@ -98,22 +102,47 @@ public class StarBot {
       Double y = s.getY();
       Double z = s.getZ();
 
+      // First loop through and calculate all of the distances
       for (Integer otherId : stars.keySet()) {
         Star otherStar = stars.get(otherId);
         Double diffX = x - otherStar.getX();
         Double diffY = y - otherStar.getY();
         Double diffZ = z - otherStar.getZ();
 
-        //Math.pow is slow, so multiply by itself instead
+        // Calculate distancce - Math.pow is slow, so multiply by itself instead
         Double dist = Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
 
-        //TODO CREATE A SORTED DATA STRUCTURE TO STORE ALL THE DISTANCES AND THEN GET ID
-        // SortedMap<>??
-//        System.out.println(Integer.toString(otherId) + ": " + Double.toString(dist));
-
-
+        // Store distance in the other Star instance and in this Star
+        try {
+          s.setDistance(otherId, dist);
+          otherStar.setDistance(s.getId(), dist);
+        } catch (AssertionError e) {
+          System.out.println("ERROR: error while setting distance in Star");
+        }
+        assert (s.getDistance(otherId) != null);
+        assert (otherStar.getDistance(s.getId()) != null);
       }
 
+      // Create comparator to compare stars by their distance
+      // Returns 0 if same distance, negative if s1 < s2, positive if s1 > s2
+      Comparator<Star> cs = new Comparator<Star>() {
+        @Override
+        public int compare(Star s1, Star s2) {
+          return Double.valueOf(s1.getDistance(s.getId()) - s2.getDistance(s.getId())).intValue();
+        }
+      };
+
+      // Sort list of all the stars using this new comparator
+      List<Star> lst = new ArrayList<Star>(stars.values());
+      Collections.sort(lst, cs);
+
+      // Get the top k from this lst
+      List<Star> topKStars = lst.subList(0, k);
+
+      // Then go through and print all those ids
+      for (Star topStar : topKStars) {
+        System.out.println(topStar.getId());
+      }
     }
   }
 
