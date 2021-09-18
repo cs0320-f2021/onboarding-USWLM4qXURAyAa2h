@@ -137,6 +137,8 @@ public final class Main {
               System.out.println(
                   "ERROR: naive_neighbors requires either two or four arguments: <k> <\"name\"> or <k> <x> <y> <z>");
             }
+          } else {
+            System.out.println("ERROR: do not recognize command");
           }
         } catch (Exception e) {
           e.printStackTrace();

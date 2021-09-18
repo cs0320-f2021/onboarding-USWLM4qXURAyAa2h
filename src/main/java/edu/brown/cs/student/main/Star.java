@@ -71,7 +71,7 @@ public class Star {
     Double diffX = x - otherStar.getX();
     Double diffY = y - otherStar.getY();
     Double diffZ = z - otherStar.getZ();
-    return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
+    return Math.sqrt((diffX * diffX) + (diffY * diffY) + (diffZ * diffZ));
   }
 
 
