@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -92,19 +95,39 @@ public final class Main {
               System.out.println("ERROR: readcsv requires exactly one filename argument.");
             }
           } else if (arguments[0].equals("naive_neighbors")) {
-            if (arguments.length == 5) {
-              Integer k = Integer.parseInt(arguments[1]);
-              Double x = Double.parseDouble(arguments[2]);
-              Double y = Double.parseDouble(arguments[3]);
-              Double z = Double.parseDouble(arguments[4]);
+            // Parse for strings in quotation marks with spaces
+            List<String> naiveArgs = new ArrayList<String>();
+            naiveArgs.add(arguments[0]);
+            for (int i = 1; i < arguments.length; i++) {
+              if (arguments[i].startsWith("\"") & !arguments[i].endsWith("\"")) {
+                String newStr = arguments[i];
+                for (int j = i + 1; j < arguments.length; j++) {
+                  newStr += " " + arguments[j];
+                  if (arguments[j].endsWith("\"")) {
+                    naiveArgs.add(newStr);
+                    i = j;
+                    break;
+                  }
+                }
+              } else {
+                naiveArgs.add(arguments[i]);
+              }
+            }
+
+            // Using the parsed inputs, respond appropriately
+            if (naiveArgs.size() == 5) {
+              Integer k = Integer.parseInt(naiveArgs.get(1));
+              Double x = Double.parseDouble(naiveArgs.get(2));
+              Double y = Double.parseDouble(naiveArgs.get(3));
+              Double z = Double.parseDouble(naiveArgs.get(4));
 
               String err = sb.naiveNeighborsCoords(k, x, y, z);
               if (!err.equals("")) {
                 System.out.println(err);
               }
-            } else if (arguments.length == 3) {
-              Integer k = Integer.parseInt(arguments[1]);
-              String name = arguments[2];
+            } else if (naiveArgs.size() == 3) {
+              Integer k = Integer.parseInt(naiveArgs.get(1));
+              String name = naiveArgs.get(2);
 
               String err = sb.naiveNeighborsName(k, name);
               if (!err.equals("")) {
