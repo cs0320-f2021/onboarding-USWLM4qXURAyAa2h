@@ -34,6 +34,20 @@ public class StarBot {
   }
 
   /**
+   * Returns the stars array, for testing purposes
+   */
+  public HashMap<Integer, Star> getStars() {
+    return stars;
+  }
+
+  /**
+   * Returns the namesToIds array, for testing purposes
+   */
+  public HashMap<String, Integer> getNamesToIds() {
+    return namesToIds;
+  }
+
+  /**
    * Reads in a csv of star data, completely replacing any previously-read data.
    * Called with the `stars` command in the REPL loop.
    *
@@ -42,6 +56,7 @@ public class StarBot {
    * message if error occurs in reading the file
    * if csv is not well-formed as pdf specifies
    */
+  @SuppressWarnings("checkstyle:WhitespaceAfter")
   public String readCsv(String filename) {
     //Refresh the stars that are in here right now
     stars = new HashMap<Integer, Star>();
@@ -84,6 +99,8 @@ public class StarBot {
     } catch (IOException e) {
       return "ERROR: IOException occurred";
     }
+
+    System.out.println("ASDFASDF" + stars.get(1).equals(new Star(1, "Lonely Star", 5.0,-2.24,10.04)));
     return "";
   }
 

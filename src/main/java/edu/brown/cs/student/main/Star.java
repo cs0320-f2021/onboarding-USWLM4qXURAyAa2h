@@ -25,6 +25,17 @@ public class Star {
   }
 
   /**
+   * Equals function for a star
+   *
+   * @param s other star
+   * @return true if all the fields match
+   */
+  public boolean equals(Star s) {
+    return (id.equals(s.getId()) && name.equals(s.name) && x.equals(s.getX()) &&
+        y.equals(s.getY()) && z.equals(s.getZ()));
+  }
+
+  /**
    * Getter for a star's coordinates
    *
    * @return x coordinate as Double
